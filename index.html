@@ -372,27 +372,100 @@ input[type=range]{width:100%;accent-color:var(--info);cursor:pointer;height:24px
 <!-- ══ API 설정 ══ -->
 <div class="sec" id="apiset">
   <div class="api-setup">
-    <div class="as-title">🔑 Anthropic API 키 설정</div>
+    <div class="as-title">🔑 Finnhub API 키 설정</div>
     <div class="as-desc">
-      API 키를 입력하면 Claude AI가 웹검색으로 실시간 주가·뉴스·신호를 분석합니다.<br>
-      키는 브라우저 메모리에만 저장되며 외부로 전송되지 않습니다.
+      아래 버튼으로 무료 키 발급 후 입력하면 실시간 주가 조회가 가능해요!<br>
+      키는 내 기기에만 저장되며 외부로 전송되지 않습니다. ✓ 완전 무료
     </div>
-    <div style="margin-bottom:.75rem;">
-      <div id="current-api-status" class="api-status disconnected" style="margin-bottom:10px;">🔴 미연결 — API 키 입력 필요</div>
+
+    <!-- 1단계: 키 발급 버튼 -->
+    <div style="background:#081810;border:1.5px solid var(--buy-bd);border-radius:11px;padding:.85rem;margin-bottom:.75rem;">
+      <div style="font-size:12px;font-weight:800;color:#A0FFD0;margin-bottom:.6rem;">① 먼저 무료 API 키 발급하기</div>
+      <button class="btn-g" onclick="window.open('https://finnhub.io/register','_blank')" style="margin-bottom:6px;">
+        🌐 Finnhub 무료 가입 & 키 발급하기 ↗
+      </button>
+      <div style="font-size:11px;color:var(--t3);line-height:1.7;font-weight:500;">
+        가입 → 대시보드 → <strong style="color:#FFFFFF;">API Key 복사</strong>
+      </div>
+    </div>
+
+    <!-- 2단계: 키 입력 -->
+    <div style="background:#060E1C;border:1.5px solid var(--info-bd);border-radius:11px;padding:.85rem;margin-bottom:.75rem;">
+      <div style="font-size:12px;font-weight:800;color:#FFD580;margin-bottom:.6rem;">② 발급받은 키 입력하기</div>
+      <div id="current-api-status" class="api-status disconnected" style="margin-bottom:8px;">🔴 미연결 — 키 입력 필요</div>
       <input type="password" id="api-key-input"
         style="font-size:13px;padding:10px 13px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--t1);width:100%;font-weight:600;margin-bottom:8px;"
-        placeholder="sk-ant-api03-..."/>
-      <button class="btn-b" onclick="saveApiKey()" style="margin-bottom:0;">🔑 API 키 저장 & 연결</button>
+        placeholder="발급받은 Finnhub API 키를 여기에 붙여넣기"/>
+      <button class="btn-b" onclick="saveFinnhubKey()" style="margin-bottom:0;">
+        ⚡ 실시간 연결하기
+      </button>
+    </div>
+
+    <!-- 3단계: 연결 확인 -->
+    <div style="background:#1A1006;border:1.5px solid var(--hold-bd);border-radius:11px;padding:.85rem;">
+      <div style="font-size:12px;font-weight:800;color:#FFE8B0;margin-bottom:.6rem;">③ 연결 완료 후 실시간 조회!</div>
+      <button class="btn-y" onclick="go('live');nav('live');" style="margin-bottom:0;">
+        📡 실시간 주가 조회하러 가기 →
+      </button>
     </div>
   </div>
+
   <div class="card">
-    <div class="ct">💡 API 키 발급 방법</div>
-    <div style="font-size:13px;color:var(--t2);line-height:1.8;font-weight:500;">
-      1. <strong style="color:#FFFFFF;">console.anthropic.com</strong> 접속<br>
-      2. 로그인 → <strong style="color:#FFFFFF;">API Keys</strong> 메뉴<br>
-      3. <strong style="color:#FFFFFF;">Create Key</strong> 클릭<br>
-      4. 발급된 키를 위에 붙여넣기<br><br>
-      <span style="color:var(--hold);font-weight:700;">💰 API 요금: 조회당 약 $0.001~0.003 (매우 저렴)</span>
+    <div class="ct">📊 Finnhub 무료 플랜 스펙</div>
+    <div class="qr"><div class="ql">🇺🇸 미국주식</div><div class="qv" style="color:var(--buy);">실시간 ✓</div></div>
+    <div class="qr"><div class="ql">📈 호출 횟수</div><div class="qv" style="color:var(--buy);">분당 60회 무료</div></div>
+    <div class="qr"><div class="ql">⚡ WebSocket</div><div class="qv" style="color:var(--buy);">실시간 스트리밍 ✓</div></div>
+    <div class="qr"><div class="ql">🇰🇷 한국주식</div><div class="qv" style="color:var(--hold);">유료 플랜 필요</div></div>
+    <div class="qr"><div class="ql">💰 비용</div><div class="qv" style="color:var(--buy);">무료!</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">🇰🇷 한국주식 실시간 연동 — KIS API</div>
+
+    <!-- KIS 키 발급 버튼 -->
+    <div style="background:#0A2E1C;border:1.5px solid var(--buy-bd);border-radius:11px;padding:.85rem;margin-bottom:.75rem;">
+      <div style="font-size:12px;font-weight:800;color:#A0FFD0;margin-bottom:.6rem;">① 한국투자증권 KIS API 키 발급</div>
+      <button class="btn-g" onclick="window.open('https://apiportal.koreainvestment.com','_blank')" style="margin-bottom:6px;">
+        🌐 KIS Developers 가입 & 키 발급하기 ↗
+      </button>
+      <div style="font-size:11px;color:var(--t3);line-height:1.7;font-weight:500;">
+        로그인 → 앱 등록 → <strong style="color:#FFFFFF;">App Key + App Secret 복사</strong><br>
+        <span style="color:var(--hold);font-weight:700;">⚠ 한국투자증권 계좌가 있어야 발급 가능합니다.</span>
+      </div>
+    </div>
+
+    <!-- KIS App Key 입력 -->
+    <div style="background:#060E1C;border:1.5px solid var(--info-bd);border-radius:11px;padding:.85rem;margin-bottom:.75rem;">
+      <div style="font-size:12px;font-weight:800;color:#FFD580;margin-bottom:.6rem;">② KIS App Key + Secret 입력</div>
+      <div id="kis-api-status" class="api-status disconnected" style="margin-bottom:8px;">🔴 미연결 — KIS 키 입력 필요</div>
+      <div class="fg" style="margin-bottom:8px;">
+        <label>App Key</label>
+        <input type="password" id="kis-app-key"
+          style="font-size:13px;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--t1);font-weight:600;"
+          placeholder="KIS App Key 붙여넣기"/>
+      </div>
+      <div class="fg" style="margin-bottom:10px;">
+        <label>App Secret</label>
+        <input type="password" id="kis-app-secret"
+          style="font-size:13px;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--t1);font-weight:600;"
+          placeholder="KIS App Secret 붙여넣기"/>
+      </div>
+      <div style="display:flex;gap:7px;">
+        <button class="btn-b" onclick="saveKisKey()" style="margin-bottom:0;flex:1;">
+          ⚡ KIS 연결하기
+        </button>
+        <button class="btn-sm" onclick="clearKisKey()" style="flex-shrink:0;">
+          🗑 초기화
+        </button>
+      </div>
+    </div>
+
+    <!-- KIS 연결 후 이동 -->
+    <div style="background:#1A1006;border:1.5px solid var(--hold-bd);border-radius:11px;padding:.85rem;">
+      <div style="font-size:12px;font-weight:800;color:#FFE8B0;margin-bottom:.6rem;">③ 연결 완료 후 한국주식 조회!</div>
+      <button class="btn-y" onclick="go('live');nav('live');" style="margin-bottom:0;">
+        📡 한국주식 실시간 조회하러 가기 →
+      </button>
     </div>
   </div>
   <div class="card">
@@ -596,9 +669,14 @@ input[type=range]{width:100%;accent-color:var(--info);cursor:pointer;height:24px
       <div class="fg"><label>종목명</label><input type="text" id="sp-nm" value="삼성전자"/></div>
       <div class="fg"><label>투자 금액</label><input type="number" id="sp-amt" value="5000000"/></div>
       <div class="fg"><label>분할 횟수</label><select id="sp-n"><option value="3">3분할</option><option value="4" selected>4분할</option><option value="5">5분할</option></select></div>
-      <div class="fg"><label>현재가</label><input type="text" id="sp-p" value="73,400"/></div>
-      <div class="fg"><label>목표가</label><input type="text" id="sp-g" value="82,000"/></div>
-      <div class="fg"><label>손절가</label><input type="text" id="sp-x" value="65,000"/></div>
+      <div class="fg"><label>현재가 <span style="font-size:10px;color:var(--info);font-weight:700;">자동연동</span></label>
+        <div style="display:flex;gap:6px;">
+          <input type="text" id="sp-p" value="73,400" style="flex:1;"/>
+          <button id="sp-fetch-btn" onclick="fetchSpPrice()" style="padding:8px 10px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;background:#0E3460;color:#FFFFFF;border:1.5px solid #4A9EE8;white-space:nowrap;flex-shrink:0;">🔍 현재가 조회</button>
+        </div>
+      </div>
+      <div class="fg"><label>목표가 <span style="font-size:10px;color:var(--buy);font-weight:700;">현재가+10% 자동</span></label><input type="text" id="sp-g" value="82,000"/></div>
+      <div class="fg"><label>손절가 <span style="font-size:10px;color:var(--sell);font-weight:700;">현재가-8% 자동</span></label><input type="text" id="sp-x" value="65,000"/></div>
     </div>
     <button class="btn-g" id="sp-btn" onclick="calcSplit()">🚀 분할 계획 생성</button>
   </div>
@@ -625,26 +703,173 @@ function load(){try{return JSON.parse(localStorage.getItem(SK))||{};}catch(e){re
 function saveD(key,val){try{var d=load();d[key]=val;localStorage.setItem(SK,JSON.stringify(d));}catch(e){}}
 var D=load();
 
-/* ══ API 키 ══ */
+/* ══ Finnhub API 키 관리 ══ */
 var API_KEY='';
-function saveApiKey(){
+
+/* 저장된 Finnhub 키 자동 로드 */
+(function(){
+  var saved=localStorage.getItem('stocknow_finnhub_key');
+  if(saved){
+    FINNHUB_KEY=saved;
+    API_KEY=saved;
+    setTimeout(function(){
+      setApiConnected(true);
+      connectFinnhubWS();
+    },800);
+  }
+})();
+
+/* Finnhub 키 저장 */
+function saveFinnhubKey(){
   var k=document.getElementById('api-key-input').value.trim();
-  if(!k.startsWith('sk-ant')){toast('올바른 API 키 형식이 아닙니다! (sk-ant-...로 시작)','#6B4020');return;}
+  if(!k||k.length<10){
+    toast('올바른 Finnhub API 키를 입력해주세요!','#6B4020');
+    return;
+  }
+  FINNHUB_KEY=k;
   API_KEY=k;
-  document.getElementById('api-key-input').value='sk-ant-...'+k.slice(-6);
+  localStorage.setItem('stocknow_finnhub_key',k);
+  document.getElementById('api-key-input').value='••••••••'+k.slice(-4);
   setApiConnected(true);
-  saveD('apiKey','saved');
-  toast('✓ API 연결 완료! 이제 실시간 주가 조회가 가능합니다.');
+  /* WebSocket 연결 시작 */
+  connectFinnhubWS();
+  toast('✓ Finnhub 연결 완료! 실시간 주가 스트리밍 시작 🚀');
 }
+
+/* 하위 호환성 */
+function saveApiKey(){ saveFinnhubKey(); }
+
+/* ══ KIS API 키 관리 ══ */
+var KIS_APP_KEY = '';
+var KIS_APP_SECRET = '';
+var KIS_ACCESS_TOKEN = '';
+
+/* 저장된 KIS 키 자동 로드 */
+(function(){
+  var savedKey = localStorage.getItem('stocknow_kis_key');
+  var savedSecret = localStorage.getItem('stocknow_kis_secret');
+  if(savedKey && savedSecret){
+    KIS_APP_KEY = savedKey;
+    KIS_APP_SECRET = savedSecret;
+    setTimeout(function(){ setKisConnected(true); }, 600);
+  }
+})();
+
+function saveKisKey(){
+  var k = document.getElementById('kis-app-key').value.trim();
+  var s = document.getElementById('kis-app-secret').value.trim();
+  if(!k || k.length < 10){ toast('App Key를 올바르게 입력해주세요!','#6B4020'); return; }
+  if(!s || s.length < 10){ toast('App Secret을 올바르게 입력해주세요!','#6B4020'); return; }
+  KIS_APP_KEY = k;
+  KIS_APP_SECRET = s;
+  localStorage.setItem('stocknow_kis_key', k);
+  localStorage.setItem('stocknow_kis_secret', s);
+  document.getElementById('kis-app-key').value = '••••••••' + k.slice(-4);
+  document.getElementById('kis-app-secret').value = '••••••••' + s.slice(-4);
+  setKisConnected(true);
+  toast('✓ 한국투자증권 KIS 연결 완료! 한국주식 실시간 조회 가능 🇰🇷');
+}
+
+function clearKisKey(){
+  KIS_APP_KEY = '';
+  KIS_APP_SECRET = '';
+  KIS_ACCESS_TOKEN = '';
+  localStorage.removeItem('stocknow_kis_key');
+  localStorage.removeItem('stocknow_kis_secret');
+  document.getElementById('kis-app-key').value = '';
+  document.getElementById('kis-app-secret').value = '';
+  setKisConnected(false);
+  toast('KIS 키가 초기화됐어요.','#6B4020');
+}
+
+function setKisConnected(ok){
+  var el = document.getElementById('kis-api-status');
+  if(!el) return;
+  if(ok){
+    el.textContent = '🟢 KIS 연결됨 — 한국주식 실시간 조회 가능!';
+    el.className = 'api-status connected';
+  } else {
+    el.textContent = '🔴 미연결 — KIS 키 입력 필요';
+    el.className = 'api-status disconnected';
+  }
+}
+
+/* ══ KIS 토큰 발급 + 한국주식 조회 ══ */
+async function fetchKISToken(){
+  if(!KIS_APP_KEY || !KIS_APP_SECRET) throw new Error('KIS 키 없음');
+  var resp = await fetch('https://openapi.koreainvestment.com:9443/oauth2/tokenP', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      grant_type: 'client_credentials',
+      appkey: KIS_APP_KEY,
+      appsecret: KIS_APP_SECRET
+    })
+  });
+  if(!resp.ok) throw new Error('KIS 토큰 발급 실패: ' + resp.status);
+  var data = await resp.json();
+  KIS_ACCESS_TOKEN = data.access_token;
+  return KIS_ACCESS_TOKEN;
+}
+
+async function fetchKoreanStockKIS(ticker){
+  if(!KIS_ACCESS_TOKEN) await fetchKISToken();
+  var resp = await fetch(
+    'https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-price' +
+    '?fid_cond_mrkt_div_code=J&fid_input_iscd=' + ticker,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + KIS_ACCESS_TOKEN,
+        'appkey': KIS_APP_KEY,
+        'appsecret': KIS_APP_SECRET,
+        'tr_id': 'FHKST01010100'
+      }
+    }
+  );
+  if(!resp.ok) throw new Error('KIS 주가 조회 실패: ' + resp.status);
+  var data = await resp.json();
+  var o = data.output;
+  if(!o || !o.stck_prpr) throw new Error('KIS 데이터 없음');
+
+  var price = parseInt(o.stck_prpr);
+  var changePct = parseFloat(o.prdy_ctrt || 0);
+  var change = parseInt(o.prdy_vrss || 0);
+  var high = parseInt(o.stck_hgpr || price);
+  var low = parseInt(o.stck_lwpr || price);
+  var open = parseInt(o.stck_oprc || price);
+  var vol = parseInt(o.acml_vol || 0);
+  var rsi = calcRSI(changePct);
+  var quant = calcQuantScore(changePct, rsi);
+  var signal = getSignal(quant, rsi);
+
+  return {
+    price: price.toLocaleString(),
+    currency: 'KRW',
+    change: (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%',
+    changeAmt: (change >= 0 ? '+' : '') + change.toLocaleString() + '원',
+    high: high.toLocaleString(),
+    low: low.toLocaleString(),
+    open: open.toLocaleString(),
+    volume: vol.toLocaleString(),
+    rsi: rsi.toString(),
+    quant: quant.toString(),
+    signal: signal,
+    analysis: generateAnalysis(ticker, price, changePct, rsi, quant, 'KRW'),
+    news: 'KIS 실시간 데이터 (' + new Date().toLocaleTimeString('ko-KR') + ')',
+    updatedAt: new Date().toLocaleTimeString('ko-KR')
+  };
+}
+
 function setApiConnected(ok){
   var b=document.getElementById('api-status-badge');
   var c=document.getElementById('current-api-status');
   if(ok){
-    b.textContent='🟢 API 연결됨';b.className='api-status connected';
-    c.textContent='🟢 연결됨 — 실시간 주가 조회 가능';c.className='api-status connected';
+    b.textContent='🟢 실시간 연결됨';b.className='api-status connected';
+    if(c){c.textContent='🟢 Finnhub 연결됨 — 실시간 주가 조회 가능!';c.className='api-status connected';}
   }else{
     b.textContent='🔑 API 미연결';b.className='api-status disconnected';
-    c.textContent='🔴 미연결 — API 키 입력 필요';c.className='api-status disconnected';
+    if(c){c.textContent='🔴 미연결 — Finnhub 키 입력 필요';c.className='api-status disconnected';}
   }
 }
 
@@ -707,34 +932,425 @@ function removeWL(i){
   renderWLManage();renderWLLive();renderOvWL();toast('삭제됐어요!');
 }
 
-/* API 호출 */
-async function callClaudeAPI(prompt){
-  if(!API_KEY)throw new Error('API_KEY_MISSING');
-  var resp=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1000,
-      tools:[{type:'web_search_20250305',name:'web_search'}],
-      messages:[{role:'user',content:prompt}]
-    })
-  });
-  if(!resp.ok)throw new Error('API_ERROR:'+resp.status);
-  var data=await resp.json();
-  var text='';
-  if(data.content)data.content.forEach(function(c){if(c.type==='text')text+=c.text;});
-  return text;
+/* ══════════════════════════════════════
+   실시간 주가 연동
+   - 미국주식: Finnhub API (CORS 허용, 무료 60회/분)
+   - 한국주식: Finnhub API (KRX 지원)
+   - 브라우저에서 직접 호출 가능!
+══════════════════════════════════════ */
+
+/* Finnhub API 키 — 여기에 입력하세요 */
+var FINNHUB_KEY = '';  /* ← 여기에 키 입력 */
+
+/* 저장된 키 불러오기 */
+(function(){
+  var saved = localStorage.getItem('stocknow_finnhub_key');
+  if(saved) FINNHUB_KEY = saved;
+})();
+
+/* 한국 종목 판별 */
+function isKoreanStock(name, ticker, market){
+  if(market === 'KRX') return true;
+  if(ticker && /^\d{6}$/.test(ticker)) return true;
+  var korNames = ['삼성','SK하이닉스','카카오','네이버','현대','기아','LG','셀트리온','에코프로','포스코','롯데','한화','두산','코스피','KOSPI'];
+  return korNames.some(function(n){ return name.includes(n); });
 }
 
-/* 단일 종목 조회 */
-async function fetchStockData(name,ticker,market){
-  var prompt='지금 당장 '+name+' (티커:'+ticker+', 시장:'+market+') 현재 주가를 웹에서 검색해서 아래 JSON만 응답해주세요. 다른 텍스트 없이 JSON만:\n'+
-    '{"price":"현재가(숫자만,콤마포함)","currency":"KRW 또는 USD","change":"+1.8% 형식","rsi":"0-100숫자","quant":"0-100종합점수","signal":"매수 또는 매도 또는 보유","analysis":"2줄 요약","news":"최근 핵심 뉴스 1문장"}';
-  var text=await callClaudeAPI(prompt);
-  var m=text.match(/\{[\s\S]*?\}/);
-  if(!m)throw new Error('PARSE_ERROR');
-  return JSON.parse(m[0]);
+/* 한국 종목 티커 맵 */
+var KOR_TICKER = {
+  '삼성전자':'005930.KS','SK하이닉스':'000660.KS','카카오':'035720.KS',
+  'NAVER':'035420.KS','네이버':'035420.KS','현대차':'005380.KS',
+  '기아':'000270.KS','LG에너지솔루션':'373220.KS','셀트리온':'068270.KS',
+  '삼성SDI':'006400.KS','에코프로':'086520.KS','에코프로비엠':'247540.KS',
+  'LG화학':'051910.KS','현대모비스':'012330.KS','삼성바이오로직스':'207940.KS',
+  'KB금융':'105560.KS','신한지주':'055550.KS','포스코홀딩스':'005490.KS',
+  '하이브':'352820.KS','카카오뱅크':'323410.KS','LG전자':'066570.KS',
+};
+
+/* 미국 종목 티커 맵 */
+var US_TICKER = {
+  'NVIDIA':'NVDA','Apple':'AAPL','Microsoft':'MSFT','Tesla':'TSLA',
+  'Amazon':'AMZN','Google':'GOOGL','알파벳':'GOOGL','알파벳A':'GOOGL',
+  'Meta':'META','Netflix':'NFLX','AMD':'AMD','Intel':'INTC',
+  'Qualcomm':'QCOM','Broadcom':'AVGO',
+};
+
+/* 종목명 → 티커 변환 */
+function resolveTicker(name, ticker, market){
+  if(ticker && ticker !== '-' && ticker !== '') return ticker;
+  if(isKoreanStock(name, ticker, market)){
+    return KOR_TICKER[name] || (name + '.KS');
+  }
+  return US_TICKER[name] || name;
+}
+
+/* 퀀트 점수 계산 */
+function calcQuantScore(changePct, rsi){
+  var score = 50;
+  if(rsi >= 30 && rsi <= 65) score += 15;
+  else if(rsi < 30) score += 10;
+  else score -= 10;
+  if(changePct > 0 && changePct <= 3) score += 10;
+  else if(changePct > 3) score += 5;
+  else if(changePct < -3) score -= 10;
+  else score += 2;
+  return Math.min(99, Math.max(1, Math.round(score)));
+}
+
+/* 매매 신호 */
+function getSignal(quant, rsi){
+  if(quant >= 70 && rsi < 70) return '매수';
+  if(quant <= 35 || rsi > 75) return '매도';
+  return '보유';
+}
+
+/* RSI 추정 */
+function calcRSI(changePct){
+  return Math.min(95, Math.max(5, Math.round(50 + changePct * 4)));
+}
+
+/* 분석 텍스트 생성 */
+function generateAnalysis(name, price, changePct, rsi, quant, currency){
+  var analysis = name + ' ' + (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%. ';
+  if(rsi < 30) analysis += 'RSI ' + rsi + ' — 과매도 구간, 반등 가능성. ';
+  else if(rsi > 70) analysis += 'RSI ' + rsi + ' — 과매수 주의. ';
+  else analysis += 'RSI ' + rsi + ' — 정상 구간. ';
+  if(quant >= 70) analysis += '퀀트 ' + quant + '점 매수 신호.';
+  else if(quant <= 35) analysis += '퀀트 ' + quant + '점 매도 신호.';
+  else analysis += '퀀트 ' + quant + '점 중립.';
+  return analysis;
+}
+
+/* ══ Finnhub 실시간 주가 조회 (REST) ══ */
+async function fetchFinnhub(symbol){
+  if(!FINNHUB_KEY) throw new Error('FINNHUB_KEY_MISSING');
+
+  /* Finnhub REST API — CORS 허용됨 */
+  var url = 'https://finnhub.io/api/v1/quote?symbol='
+    + encodeURIComponent(symbol) + '&token=' + FINNHUB_KEY;
+
+  var resp = await fetch(url, {
+    method: 'GET',
+    headers: { 'X-Finnhub-Token': FINNHUB_KEY }
+  });
+
+  if(resp.status === 401) throw new Error('API 키가 올바르지 않습니다. 🔑 API 설정에서 키를 확인해주세요.');
+  if(resp.status === 429) throw new Error('요청 한도 초과 (60회/분). 잠시 후 다시 시도해주세요.');
+  if(!resp.ok) throw new Error('Finnhub 오류: ' + resp.status);
+
+  var data = await resp.json();
+
+  /* 데이터 없음 — 한국주식은 티커 형식이 다를 수 있음 */
+  if(!data.c || data.c === 0){
+    /* 한국주식 시도: KS → 다른 형식 */
+    if(symbol.includes('.KS')){
+      throw new Error(
+        '한국주식 조회 실패.\n' +
+        'Finnhub 무료플랜은 한국주식 미지원.\n' +
+        '미국주식(NVDA, AAPL 등)으로 시도해보세요!'
+      );
+    }
+    throw new Error('데이터 없음: ' + symbol + ' — 티커를 확인해주세요.');
+  }
+
+  var price     = data.c;   // 현재가
+  var prevClose = data.pc;  // 전일 종가
+  var high      = data.h;   // 당일 고가
+  var low       = data.l;   // 당일 저가
+  var open      = data.o;   // 당일 시가
+  var change    = price - prevClose;
+  var changePct = prevClose > 0 ? (change / prevClose) * 100 : 0;
+  var rsi   = calcRSI(changePct);
+  var quant = calcQuantScore(changePct, rsi);
+  var signal = getSignal(quant, rsi);
+
+  return {
+    price: price.toFixed(2),
+    currency: 'USD',
+    change: (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%',
+    changeAmt: (change >= 0 ? '+$' : '-$') + Math.abs(change).toFixed(2),
+    high: high.toFixed(2),
+    low: low.toFixed(2),
+    open: open.toFixed(2),
+    volume: '-',
+    rsi: rsi.toString(),
+    quant: quant.toString(),
+    signal: signal,
+    analysis: generateAnalysis(symbol, price, changePct, rsi, quant, 'USD'),
+    news: 'Finnhub 실시간 (' + new Date().toLocaleTimeString('ko-KR') + ')',
+    updatedAt: new Date().toLocaleTimeString('ko-KR')
+  };
+}
+
+/* ══ Finnhub WebSocket — 실시간 스트리밍 ══ */
+var ws = null;
+var wsSymbols = [];
+var wsCallbacks = {};
+
+function connectFinnhubWS(){
+  if(!FINNHUB_KEY) return;
+  if(ws && ws.readyState === WebSocket.OPEN) return;
+
+  ws = new WebSocket('wss://ws.finnhub.io?token=' + FINNHUB_KEY);
+
+  ws.onopen = function(){
+    console.log('Finnhub WebSocket 연결됨!');
+    /* 관심종목 구독 */
+    wsSymbols.forEach(function(sym){
+      ws.send(JSON.stringify({type:'subscribe', symbol: sym}));
+    });
+  };
+
+  ws.onmessage = function(e){
+    try{
+      var msg = JSON.parse(e.data);
+      if(msg.type === 'trade' && msg.data){
+        msg.data.forEach(function(trade){
+          var sym = trade.s;
+          var price = trade.p;
+          /* 관심종목 카드 실시간 업데이트 */
+          updateWLCardPrice(sym, price);
+          if(wsCallbacks[sym]) wsCallbacks[sym](price);
+        });
+      }
+    }catch(err){}
+  };
+
+  ws.onerror = function(){ console.log('WebSocket 오류'); };
+  ws.onclose = function(){
+    /* 5초 후 재연결 */
+    setTimeout(function(){ if(FINNHUB_KEY) connectFinnhubWS(); }, 5000);
+  };
+}
+
+function subscribeWS(symbol){
+  if(!wsSymbols.includes(symbol)){
+    wsSymbols.push(symbol);
+    if(ws && ws.readyState === WebSocket.OPEN){
+      ws.send(JSON.stringify({type:'subscribe', symbol: symbol}));
+    }
+  }
+}
+
+function updateWLCardPrice(symbol, price){
+  /* 관심종목 리스트에서 해당 종목 찾아서 가격 업데이트 */
+  var wl = WATCHLIST.find(function(s){
+    return resolveTicker(s.name, s.ticker, s.market) === symbol;
+  });
+  if(wl){
+    var oldPrice = parseFloat(wl.price);
+    wl.price = '$' + price.toFixed(2);
+    if(oldPrice && oldPrice !== price){
+      var changePct = ((price - oldPrice) / oldPrice * 100);
+      wl.chg = (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%';
+    }
+    renderWLLive();
+    renderOvWL();
+  }
+}
+
+/* ══ 메인 주가 조회 — 한국:KIS / 미국:Finnhub 자동 분기 ══ */
+async function fetchStockData(name, ticker, market){
+  var resolvedTicker = resolveTicker(name, ticker, market);
+  var isKor = isKoreanStock(name, ticker, market);
+
+  if(isKor){
+    /* 한국주식 — KIS API */
+    if(!KIS_APP_KEY || !KIS_APP_SECRET){
+      throw new Error(
+        '한국주식은 KIS API 키가 필요해요!\n' +
+        '🔑 API 설정 탭 → 한국투자증권 KIS 연결하기'
+      );
+    }
+    /* 티커에서 .KS 제거 (KIS는 6자리 숫자만 사용) */
+    var kisTicker = resolvedTicker.replace('.KS','').replace('.KQ','');
+    return await fetchKoreanStockKIS(kisTicker);
+  } else {
+    /* 미국주식 — Finnhub API */
+    if(!FINNHUB_KEY){
+      throw new Error(
+        '미국주식은 Finnhub API 키가 필요해요!\n' +
+        '🔑 API 설정 탭 → Finnhub 연결하기'
+      );
+    }
+    var data = await fetchFinnhub(resolvedTicker);
+    subscribeWS(resolvedTicker);
+    return data;
+  }
+}
+
+/* 한국 종목 판별 */
+function isKoreanStock(name, ticker, market){
+  if(market === 'KRX') return true;
+  if(ticker && /^\d{6}$/.test(ticker)) return true;
+  var korNames = ['삼성','SK하이닉스','카카오','네이버','현대','기아','LG','셀트리온','에코프로','포스코','롯데','한화','두산','코스피','KOSPI'];
+  return korNames.some(function(n){ return name.includes(n); });
+}
+
+/* 한국 종목 티커 맵 */
+var KOR_TICKER = {
+  '삼성전자':'005930.KS','SK하이닉스':'000660.KS','카카오':'035720.KS',
+  'NAVER':'035420.KS','네이버':'035420.KS','현대차':'005380.KS',
+  '기아':'000270.KS','LG에너지솔루션':'373220.KS','셀트리온':'068270.KS',
+  '삼성SDI':'006400.KS','에코프로':'086520.KS','에코프로비엠':'247540.KS',
+  'LG화학':'051910.KS','현대모비스':'012330.KS','삼성바이오로직스':'207940.KS',
+  'KB금융':'105560.KS','신한지주':'055550.KS','포스코홀딩스':'005490.KS',
+  '하이브':'352820.KS','카카오뱅크':'323410.KS','LG전자':'066570.KS',
+};
+
+/* 미국 종목 티커 맵 */
+var US_TICKER = {
+  'NVIDIA':'NVDA','Apple':'AAPL','Microsoft':'MSFT','Tesla':'TSLA',
+  'Amazon':'AMZN','Google':'GOOGL','알파벳':'GOOGL','알파벳A':'GOOGL',
+  'Meta':'META','Netflix':'NFLX','AMD':'AMD','Intel':'INTC',
+  'Qualcomm':'QCOM','Broadcom':'AVGO',
+};
+
+/* 종목명 → 티커 변환 */
+function resolveTicker(name, ticker, market){
+  if(ticker && ticker !== '-' && ticker !== '') return ticker;
+  if(isKoreanStock(name, ticker, market)){
+    return KOR_TICKER[name] || (name + '.KS');
+  }
+  return US_TICKER[name] || name;
+}
+
+/* 퀀트 점수 계산 */
+function calcQuantScore(changePct, rsi){
+  var score = 50;
+  if(rsi >= 30 && rsi <= 65) score += 15;
+  else if(rsi < 30) score += 10;
+  else score -= 10;
+  if(changePct > 0 && changePct <= 3) score += 10;
+  else if(changePct > 3) score += 5;
+  else if(changePct < -3) score -= 10;
+  else score += 2;
+  return Math.min(99, Math.max(1, Math.round(score)));
+}
+
+/* 매매 신호 */
+function getSignal(quant, rsi){
+  if(quant >= 70 && rsi < 70) return '매수';
+  if(quant <= 35 || rsi > 75) return '매도';
+  return '보유';
+}
+
+/* 간단 RSI 추정 */
+function calcRSI(changePct){
+  return Math.min(95, Math.max(5, Math.round(50 + changePct * 4)));
+}
+
+/* Yahoo Finance 비공식 API — 한국+미국 모두 지원 */
+async function fetchYahooFinance(symbol){
+  var url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + encodeURIComponent(symbol) + '?interval=1d&range=1d';
+  var resp = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0' }
+  });
+  if(!resp.ok) throw new Error('Yahoo Finance 호출 실패: ' + resp.status);
+  var data = await resp.json();
+  var result = data.chart && data.chart.result && data.chart.result[0];
+  if(!result) throw new Error('데이터 없음: ' + symbol);
+  var meta = result.meta;
+  var price = meta.regularMarketPrice;
+  var prevClose = meta.chartPreviousClose || meta.previousClose;
+  var change = price - prevClose;
+  var changePct = (change / prevClose) * 100;
+  var currency = meta.currency || 'USD';
+  var rsi = calcRSI(changePct);
+  var quant = calcQuantScore(changePct, rsi);
+  var signal = getSignal(quant, rsi);
+  var isKRW = currency === 'KRW';
+  var priceStr = isKRW
+    ? Math.round(price).toLocaleString()
+    : price.toFixed(2);
+
+  return {
+    price: priceStr,
+    currency: currency,
+    change: (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%',
+    changeAmt: isKRW
+      ? (change >= 0 ? '+' : '') + Math.round(change).toLocaleString()
+      : (change >= 0 ? '+$' : '-$') + Math.abs(change).toFixed(2),
+    high: isKRW ? Math.round(meta.regularMarketDayHigh||price).toLocaleString() : (meta.regularMarketDayHigh||price).toFixed(2),
+    low: isKRW ? Math.round(meta.regularMarketDayLow||price).toLocaleString() : (meta.regularMarketDayLow||price).toFixed(2),
+    volume: (meta.regularMarketVolume||0).toLocaleString(),
+    rsi: rsi.toString(),
+    quant: quant.toString(),
+    signal: signal,
+    analysis: generateAnalysis(symbol, price, changePct, rsi, quant, currency),
+    news: 'Yahoo Finance 실시간 데이터 기준 (' + new Date().toLocaleTimeString('ko-KR') + ')',
+    updatedAt: new Date().toLocaleTimeString('ko-KR')
+  };
+}
+
+/* Alpha Vantage — 미국주식 보조 */
+async function fetchAlphaVantage(symbol){
+  var url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + symbol + '&apikey=' + AV_KEY;
+  var resp = await fetch(url);
+  if(!resp.ok) throw new Error('Alpha Vantage 호출 실패');
+  var data = await resp.json();
+  var quote = data['Global Quote'];
+  if(!quote || !quote['05. price']){
+    if(data['Note'] || data['Information']) throw new Error('Alpha Vantage 한도 초과 (25회/일)');
+    throw new Error('Alpha Vantage 데이터 없음');
+  }
+  var price = parseFloat(quote['05. price']);
+  var changePct = parseFloat(quote['10. change percent'].replace('%',''));
+  var change = parseFloat(quote['09. change']);
+  var rsi = calcRSI(changePct);
+  var quant = calcQuantScore(changePct, rsi);
+  var signal = getSignal(quant, rsi);
+
+  return {
+    price: price.toFixed(2),
+    currency: 'USD',
+    change: (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%',
+    changeAmt: (change >= 0 ? '+$' : '-$') + Math.abs(change).toFixed(2),
+    high: parseFloat(quote['03. high']).toFixed(2),
+    low: parseFloat(quote['04. low']).toFixed(2),
+    volume: parseInt(quote['06. volume']).toLocaleString(),
+    rsi: rsi.toString(),
+    quant: quant.toString(),
+    signal: signal,
+    analysis: generateAnalysis(symbol, price, changePct, rsi, quant, 'USD'),
+    news: 'Alpha Vantage 실시간 데이터 기준 (' + new Date().toLocaleTimeString('ko-KR') + ')',
+    updatedAt: new Date().toLocaleTimeString('ko-KR')
+  };
+}
+
+/* 분석 텍스트 생성 */
+function generateAnalysis(name, price, changePct, rsi, quant, currency){
+  var sym = currency === 'KRW' ? '₩' : '$';
+  var analysis = name + ' ' + (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%. ';
+  if(rsi < 30) analysis += 'RSI ' + rsi + ' — 과매도 구간, 반등 가능성. ';
+  else if(rsi > 70) analysis += 'RSI ' + rsi + ' — 과매수 주의, 단기 조정 가능. ';
+  else analysis += 'RSI ' + rsi + ' — 정상 구간. ';
+  if(quant >= 70) analysis += '퀀트 ' + quant + '점 매수 신호.';
+  else if(quant <= 35) analysis += '퀀트 ' + quant + '점 매도 신호.';
+  else analysis += '퀀트 ' + quant + '점 중립.';
+  return analysis;
+}
+
+/* ══ 메인 주가 조회 함수 ══ */
+async function fetchStockData(name, ticker, market){
+  var resolvedTicker = resolveTicker(name, ticker, market);
+  var isKor = isKoreanStock(name, ticker, market);
+
+  // 1차: Yahoo Finance 시도 (한국+미국 모두)
+  try{
+    return await fetchYahooFinance(resolvedTicker);
+  }catch(e1){
+    console.log('Yahoo Finance 실패:', e1.message);
+    // 2차: Alpha Vantage 시도 (미국만)
+    if(!isKor){
+      try{
+        return await fetchAlphaVantage(resolvedTicker);
+      }catch(e2){
+        throw new Error('조회 실패: ' + e2.message);
+      }
+    }
+    throw new Error('한국주식 조회 실패: ' + e1.message);
+  }
 }
 
 /* 검색 기능 */
@@ -754,21 +1370,21 @@ async function searchStock(){
   resultEl.innerHTML='<div class="stock-live-card loading"><div style="padding:1rem;text-align:center;"><div class="ldots"><span></span><span></span><span></span></div><div style="font-size:12px;color:var(--t3);margin-top:8px;font-weight:600;">'+name+' 실시간 주가 검색 중...</div></div></div>';
 
   try{
-    if(!API_KEY){
+    if(!FINNHUB_KEY){
       /* API 키 없을 때 샘플 데이터 */
-      await new Promise(function(r){setTimeout(r,1200);});
-      var demo=getDemoData(name);
-      renderSearchResult(name,demo);
-    }else{
-      var data=await fetchStockData(name,'-','-');
-      renderSearchResult(name,data);
-    }
-  }catch(e){
-    if(e.message==='API_KEY_MISSING'){
+      await new Promise(function(r){setTimeout(r,800);});
       var demo=getDemoData(name);
       renderSearchResult(name,demo,true);
     }else{
-      resultEl.innerHTML='<div class="card" style="border-color:#6B2030;"><div style="font-size:13px;color:#FFE566;font-weight:700;">⚠️ 조회 실패</div><div style="font-size:12px;color:#FFE8A0;margin-top:5px;">'+e.message+'</div></div>';
+      var data=await fetchStockData(name,'-','-');
+      renderSearchResult(name,data,false);
+    }
+  }catch(e){
+    if(e.message==='FINNHUB_KEY_MISSING'){
+      var demo=getDemoData(name);
+      renderSearchResult(name,demo,true);
+    }else{
+      resultEl.innerHTML='<div class="card" style="border-color:#6B2030;"><div style="font-size:13px;color:#FFE566;font-weight:700;">⚠️ 조회 실패</div><div style="font-size:12px;color:#FFE8A0;margin-top:5px;line-height:1.6;">'+e.message+'<br><br>💡 해결 방법:<br>1. 🔑 API 설정 탭에서 Finnhub 키 확인<br>2. 종목명 또는 티커 다시 확인<br>3. finnhub.io 에서 키 재발급</div></div>';
     }
   }
 
@@ -785,7 +1401,9 @@ function getDemoData(name){
     'KOSPI':{price:'2,650',currency:'KRW',change:'+0.5%',rsi:'52',quant:'60',signal:'보유',analysis:'공포탐욕 52 중립. 반도체 섹터 강세 견인.',news:'외국인 코스피 순매수 3,200억 — 반도체 중심'},
     'Tesla':{price:'248.30',currency:'USD',change:'-1.2%',rsi:'38',quant:'55',signal:'보유',analysis:'가격 인하 정책 지속. 에너지 사업 성장 기대.',news:'테슬라 Q2 인도량 422,000대 — 전망치 상회'},
   };
-  return demos[name]||{price:'-',currency:'KRW',change:'-',rsi:'50',quant:'55',signal:'보유',analysis:'API 키를 설정하면 실제 실시간 데이터를 조회합니다.',news:'API 설정 탭에서 Anthropic API 키를 입력해주세요.'};
+  return demos[name]||{price:'-',currency:'KRW',change:'-',rsi:'50',quant:'55',signal:'보유',
+    analysis:'🔑 API 설정 탭에서 Finnhub 키를 입력하면 실시간 데이터를 조회합니다.',
+    news:'finnhub.io 에서 무료 키 발급 후 API 설정 탭에 입력해주세요.'};
 }
 
 function renderSearchResult(name,data,isDemo){
@@ -812,7 +1430,7 @@ function renderSearchResult(name,data,isDemo){
   html+='</div>';
   if(data.analysis)html+='<div class="slc-analysis">'+data.analysis+'</div>';
   if(data.news)html+='<div class="slc-news">📰 '+data.news+'</div>';
-  if(isDemo)html+='<div style="margin-top:8px;padding:7px 10px;background:#2E2208;border-radius:8px;font-size:11px;color:#E8B84A;font-weight:700;">💡 API 설정 탭에서 키 입력 시 실제 실시간 데이터로 업데이트됩니다!</div>';
+  if(isDemo)html+='<div style="margin-top:8px;padding:8px 11px;background:#2E2208;border-radius:8px;font-size:12px;color:#E8B84A;font-weight:700;">💡 🔑 API 설정 탭에서 Finnhub 키 입력 시 실제 실시간 데이터로 자동 업데이트!</div>';
   html+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">';
   html+='<button class="btn-sm" onclick="addToWLFromSearch(\''+name+'\',\''+sig+'\',\''+quant+'\',\''+rsi+'\',\''+sym+(data.price||'-')+'\',\''+data.change+'\')" style="font-size:11px;">⭐ 관심종목 추가</button>';
   html+='<button class="btn-sm" onclick="useInSplit(\''+name+'\',\''+(data.price||'').replace(/,/g,'')+'\')">✂️ 분할매매로</button>';
@@ -837,7 +1455,10 @@ function useInSplit(name,price){
 
 /* 관심종목 전체 업데이트 */
 async function updateAllWL(){
-  if(!API_KEY){toast('API 키를 먼저 설정해주세요!','#6B4020');nav('apiset');return;}
+  if(!FINNHUB_KEY){
+    toast('🔑 API 설정 탭에서 Finnhub 키를 먼저 입력해주세요!','#6B4020');
+    nav('apiset');return;
+  }
   var btn=document.getElementById('update-all-btn');
   btn.disabled=true;
   var total=WATCHLIST.length;
@@ -1129,11 +1750,67 @@ function spMode(t){
   document.getElementById('sp-result').style.display='none';
 }
 function setSp(btn,name,p,g,x){
-  document.querySelectorAll('#sp-stocks .ssb').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');
+  document.querySelectorAll('#sp-stocks .ssb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
   document.getElementById('sp-nm').value=name;
+
+  /* 관심종목에서 실시간 가격 먼저 찾기 */
+  var wl=WATCHLIST.find(function(s){return s.name===name;});
+  if(wl&&wl.price&&wl.price!=='-'){
+    var rawPrice=wl.price.replace(/[^0-9.]/g,'');
+    if(rawPrice){
+      document.getElementById('sp-p').value=parseFloat(rawPrice).toLocaleString();
+      /* 목표가 = 현재가 + 10%, 손절가 = 현재가 - 8% 자동 계산 */
+      var cp=parseFloat(rawPrice);
+      document.getElementById('sp-g').value=Math.round(cp*1.10).toLocaleString();
+      document.getElementById('sp-x').value=Math.round(cp*0.92).toLocaleString();
+      toast('✓ '+name+' 실시간 가격 자동 적용됨!');
+      return;
+    }
+  }
+
+  /* 관심종목에 없으면 기본값 사용 */
   document.getElementById('sp-p').value=parseFloat(p).toLocaleString();
   document.getElementById('sp-g').value=parseFloat(g).toLocaleString();
   document.getElementById('sp-x').value=parseFloat(x).toLocaleString();
+  toast(name+' — 실시간 조회 후 현재가를 직접 입력하거나 🔍 조회 버튼을 눌러주세요!','#6B4020');
+}
+
+/* 분할매매 현재가 실시간 조회 */
+async function fetchSpPrice(){
+  var name=document.getElementById('sp-nm').value.trim();
+  if(!name){toast('종목명을 먼저 입력해주세요!','#6B4020');return;}
+  var btn=document.getElementById('sp-fetch-btn');
+  btn.disabled=true;btn.textContent='조회 중...';
+  try{
+    if(!API_KEY){
+      /* 관심종목에서 찾기 */
+      var wl=WATCHLIST.find(function(s){return s.name===name;});
+      if(wl&&wl.price&&wl.price!=='-'){
+        var rawPrice=wl.price.replace(/[^0-9.]/g,'');
+        var cp=parseFloat(rawPrice);
+        document.getElementById('sp-p').value=cp.toLocaleString();
+        document.getElementById('sp-g').value=Math.round(cp*1.10).toLocaleString();
+        document.getElementById('sp-x').value=Math.round(cp*0.92).toLocaleString();
+        toast('✓ '+name+' 가격 적용됨 (관심종목 기준)');
+      }else{
+        toast('API 키 설정 후 실시간 조회 가능해요!','#6B4020');
+      }
+    }else{
+      var data=await fetchStockData(name,'-','-');
+      if(data&&data.price){
+        var rawPrice=data.price.replace(/[^0-9.]/g,'');
+        var cp=parseFloat(rawPrice);
+        document.getElementById('sp-p').value=cp.toLocaleString();
+        document.getElementById('sp-g').value=Math.round(cp*1.10).toLocaleString();
+        document.getElementById('sp-x').value=Math.round(cp*0.92).toLocaleString();
+        toast('✓ '+name+' 실시간 가격 '+data.price+' 적용됨!');
+      }
+    }
+  }catch(e){
+    toast('조회 실패: '+e.message,'#6B4020');
+  }
+  btn.disabled=false;btn.textContent='🔍 현재가 조회';
 }
 function nv(id){return parseFloat((document.getElementById(id).value||'0').replace(/,/g,''))||0;}
 function calcSplit(){
@@ -1160,10 +1837,23 @@ function calcSplit(){
       '<div class="split-body"><div class="pt">'+segs+'</div>'+
       '<button class="exec-btn" onclick="execTrade(this,\''+name+'\','+(i+1)+',\''+(isBuy?'매수':'매도')+'\','+pcts[i]+','+amt+')">✓ '+(i+1)+'차 실행 & 저장</button></div></div>';
   }).join('');
-  html+='<div class="split-step" style="border-color:#6B4020;"><div class="split-head">'+
-    '<div class="step-n step-nw">⚠</div>'+
-    '<div style="flex:1;"><div style="font-size:14px;font-weight:800;color:#FFE566;">손절 — 전량 즉시</div>'+
-    '<div style="font-size:13px;color:#FFFFFF;font-weight:800;margin-top:2px;">'+stop.toLocaleString()+' 도달 시</div></div></div></div></div>';
+  html+='<div class="split-step" style="border-color:#6B4020;">'+
+    '<div class="split-head">'+
+      '<div class="step-n step-nw">⚠</div>'+
+      '<div style="flex:1;">'+
+        '<div style="font-size:14px;font-weight:800;color:#FFE566;">손절 — 전량 즉시 매도</div>'+
+        '<div style="font-size:12px;color:#FFFFFF;font-weight:700;margin-top:2px;">'+stop.toLocaleString()+' 도달 시 즉시 실행!</div>'+
+      '</div>'+
+      '<div style="text-align:right;">'+
+        '<div style="font-size:13px;font-weight:800;color:#E8904A;">100%</div>'+
+        '<div style="font-size:12px;color:#FFFFFF;font-weight:700;">전량 매도</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="split-body">'+
+      '<div style="font-size:12px;color:#FFE8B0;font-weight:600;line-height:1.6;margin-bottom:6px;">⚡ 손절가 도달 즉시 감정 없이 전량 매도하세요. 손절은 실패가 아닌 리스크 관리의 성공입니다.</div>'+
+      '<button class="exec-btn" onclick="execStopLoss(this,\''+name+'\',\''+stop.toLocaleString()+'\')" style="background:#6B4020;border-color:#E8904A;color:#FFE566;">⚠ 손절 실행 & 기록</button>'+
+    '</div>'+
+  '</div></div>';
   document.getElementById('sp-result').innerHTML=html;
   document.getElementById('sp-result').style.display='block';
 }
@@ -1172,6 +1862,20 @@ function execTrade(btn,stock,step,type,pct,amt){
   var now=new Date();
   tradeLog.unshift({stock,type,step,pct,amt,time:now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),date:now.toLocaleDateString('ko-KR',{month:'numeric',day:'numeric'})});
   saveD('tradeLog',tradeLog);toast('✓ '+step+'차 '+type+' 기록 저장!');
+}
+
+function execStopLoss(btn,stock,stopPrice){
+  btn.textContent='⚠ 손절 완료 & 기록됨';btn.classList.add('done');btn.disabled=true;
+  btn.style.background='#2E2208';btn.style.borderColor='var(--border)';btn.style.color='var(--t4)';
+  var now=new Date();
+  tradeLog.unshift({
+    stock:stock,type:'손절',step:'전량',pct:100,
+    amt:0,price:stopPrice,
+    time:now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),
+    date:now.toLocaleDateString('ko-KR',{month:'numeric',day:'numeric'})
+  });
+  saveD('tradeLog',tradeLog);
+  toast('⚠ '+stock+' 손절 기록 저장됨. 수고하셨습니다.','#6B4020');
 }
 
 /* ══ PWA 설정 ══ */
